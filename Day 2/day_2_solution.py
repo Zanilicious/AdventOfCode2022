@@ -1,4 +1,5 @@
 # Decodes symbol and returns corresponding move
+# For part 1
 def decodeMove(encodedMove):
     move = ""
     # move according to problem formulation
@@ -8,6 +9,34 @@ def decodeMove(encodedMove):
         move = "Paper"
     elif encodedMove == "C" or encodedMove == "Z":
         move = "Scissors"
+    return move
+
+# Find the player move based on end condition (win/draw/lose)
+# For part 2
+def findCorrectMove(symbol, opponentMove):
+    if symbol == "X":
+        if opponentMove == "Rock":
+            move = "Scissors"
+        elif opponentMove == "Paper":
+            move = "Rock"
+        elif opponentMove == "Scissors":
+            move = "Paper"
+        
+    elif symbol == "Y":
+        if opponentMove == "Rock":
+            move = "Rock"
+        elif opponentMove == "Paper":
+            move = "Paper"
+        elif opponentMove == "Scissors":
+            move = "Scissors"
+        
+    elif symbol == "Z":
+        if opponentMove == "Rock":
+            move = "Paper"
+        elif opponentMove == "Paper":
+            move = "Scissors"
+        elif opponentMove == "Scissors":
+            move = "Rock"
     return move
 
 # Calculates the score for a round
@@ -46,7 +75,9 @@ def readFile(filename):
     f = open(filename, "r")
 
     line = " "
-    totalScore = 0
+    # Modified to fit part 2
+    # [part 1 score, part 2 score]
+    totalScore = [0,0]
     while line != "":
         line = f.readline()
         if line != "":
@@ -56,7 +87,10 @@ def readFile(filename):
             playerMove = decodeMove(line[1])
             
             # Find the score based on both moves per round
-            totalScore += scoreCalc(opponentMove, playerMove)
+            # Slight modification to calculate part 2 score
+            totalScore[0] += scoreCalc(opponentMove, playerMove)
+            playerMove = findCorrectMove(line[1], opponentMove)
+            totalScore[1] += scoreCalc(opponentMove, playerMove)
     
     f.close()
     return totalScore
@@ -64,4 +98,5 @@ def readFile(filename):
 # Puzzle input stored in file with following name
 filename = "day_2_input.txt"
 totalScore = readFile(filename)
-print(totalScore)
+print("Score for part 1: ", totalScore[0])
+print("Score for part 2: ", totalScore[1])
