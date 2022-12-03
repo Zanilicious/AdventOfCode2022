@@ -35,12 +35,11 @@ def read_file(file_name):
         line = f.readline()
         if line != "":
 
+            group_lines.append(line)
             if len(group_lines) == 3:
                 group_badge = find_group_badge(group_lines)
                 group_item_prio += item_to_prio(group_badge)
                 group_lines = []
-            else:
-                group_lines.append(line)
 
             lines = parser(line)
 
@@ -59,11 +58,13 @@ def read_file(file_name):
 # and if the same item is found, the group badge is identified
 # Otherwise picks a new item in descending order and starts process again
 def find_group_badge(lines):
+    print(lines)
     for i in lines[0]:
         index1 = lines[1].find(i)
         if index1 != -1:
             index2 = lines[2].find(i)
             if index2 != -1:
+                print(i)
                 return i
 
 
