@@ -28,16 +28,44 @@ def read_file(file_name):
     line = " "
     f = open(file_name, "r")
     prio = 0
+    group_item_prio = 0
+    group_lines = []
 
     while line != "":
         line = f.readline()
         if line != "":
+
+            if len(group_lines) == 3:
+                group_badge = find_group_badge(group_lines)
+                group_item_prio += item_to_prio(group_badge)
+                group_lines = []
+            else:
+                group_lines.append(line)
+
             lines = parser(line)
+
             shared_item_letter = find_shared_item(lines)
+
             prio += item_to_prio(shared_item_letter)
     
     f.close()
-    print("The sum priority of all items is:", prio)
+    print("The sum priority of all items is", prio)
+    print("The sum of the group badges is", group_item_prio)
+
+# Part 2
+# Picks an item from the first rucksack,
+# compares it to the items in the second rucksack,
+# if a similar item is found, compares it to the third rucksack,
+# and if the same item is found, the group badge is identified
+# Otherwise picks a new item in descending order and starts process again
+def find_group_badge(lines):
+    for i in lines[0]:
+        index1 = lines[1].find(i)
+        if index1 != -1:
+            index2 = lines[2].find(i)
+            if index2 != -1:
+                return i
+
 
 file_name = "day_3_input.txt"
 read_file(file_name)
