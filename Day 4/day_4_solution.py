@@ -36,10 +36,26 @@ def find_fully_contained(arrays):
 
     return amount_fully_contained
 
+# Part 2
+# Finds single overlaps in pairs
+def find_overlap(arrays):
+    overlaps = 0
+
+    for i in arrays:
+        for j in i[0]:
+            if j in i[1]:
+                overlaps += 1
+                break
+    
+    return overlaps
+
+
 if __name__ == "__main__":
     file_name = "day_4_input.txt"
     input = read_file(file_name)
     arrays = generate_arrays(input)
     amount = find_fully_contained(arrays)
+    overlaps = find_overlap(arrays)
 
-    print(amount)
+    print("Amount of fully overlapping pairs:", amount)
+    print("Amount of single overlaps found in pairs:", overlaps)
